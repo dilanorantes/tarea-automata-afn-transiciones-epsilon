@@ -1,0 +1,171 @@
+// https://onlinegdb.com/S69_LvVQe
+
+package tarea;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Scanner;
+public class Tarea {
+    static String[][] listransiciones = new String[10][3];
+    static char[] caracteres = new char[100];
+    static ArrayList<String> estadosS = new ArrayList<>();
+    
+    public static void main(String[] args) {
+        Scanner escaner = new Scanner (System.in);
+        
+        listransiciones[0][0] = "0";
+        listransiciones[0][1] = "ε";
+        listransiciones[0][2] = "0,1,2,4,7";
+        
+        listransiciones[1][0] = "1";
+        listransiciones[1][1] = "ε";
+        listransiciones[1][2] = "2,4";
+        
+        listransiciones[2][0] = "2";
+        listransiciones[2][1] = "a";
+        listransiciones[2][2] = "3";
+        
+        listransiciones[3][0] = "3";
+        listransiciones[3][1] = "ε";
+        listransiciones[3][2] = "1,2,4,6,7";
+        
+        listransiciones[4][0] = "4";
+        listransiciones[4][1] = "b";
+        listransiciones[4][2] = "5";
+        
+        listransiciones[5][0] = "5";
+        listransiciones[5][1] = "ε";
+        listransiciones[5][2] = "1,2,4,6,7";
+        
+        listransiciones[6][0] = "6";
+        listransiciones[6][1] = "ε";
+        listransiciones[6][2] = "1,2,4,7";
+        
+        listransiciones[7][0] = "7";
+        listransiciones[7][1] = "a";
+        listransiciones[7][2] = "8";
+        
+        listransiciones[8][0] = "8";
+        listransiciones[8][1] = "b";
+        listransiciones[8][2] = "9";
+        
+        listransiciones[9][0] = "9";
+        listransiciones[9][1] = "b";
+        listransiciones[9][2] = "10";
+        
+        String ingresocadena;
+        System.out.println("Ingrese una cadena de ab");
+        ingresocadena = escaner.nextLine();
+        
+        
+        char[] caracteres = ingresocadena.toCharArray();
+       
+        
+        estadosS.add("0");
+        ecerradura(estadosS,"ε");
+        
+        
+        
+        System.out.println("los estados son");
+        for (String s : estadosS) {
+            System.out.println(s);    
+        }    
+        
+        
+        String caracter;
+        for (int i = 0; i < caracteres.length; i++) {
+            caracter = String.valueOf(caracteres[i]);
+            ecerraduraT(estadosS, caracter);
+            
+            System.out.println("los estados son");
+            for (String s : estadosS) {
+                System.out.println(s);
+            } 
+
+            System.out.println(" ahora con transiciones epsilon");
+            ecerradura(estadosS,"ε");
+            
+            
+            System.out.println("los estados son");
+            for (String s : estadosS) {
+                System.out.println(s);
+            } 
+            
+        }
+        
+        
+        
+        Collections.sort(estadosS);
+        
+        if (estadosS.contains("5") && estadosS.contains("10")) {
+            System.out.println("La cadena "+ ingresocadena +" es una cadena valida");
+        }else{
+            System.out.println("La cadena "+ ingresocadena +" NO es una cadena valida");
+        }
+        
+     
+        
+    }
+    
+    public static void ecerradura(ArrayList<String> estados, String contransicion){
+        ArrayList<String> temporal = new ArrayList<>();
+        temporal.addAll(estadosS);
+        
+        for (String estado : temporal) {
+            System.out.println(" el estado actual es " + estado);
+            for (int i = 0; i < listransiciones.length; i++) {
+                if (listransiciones[i][0].equals(estado) && listransiciones[i][1].equals(contransicion)) {
+                    
+                    
+                    if (listransiciones[i][2].contains(",")) {
+                        String[] separados = listransiciones[i][2].split(",");
+                        for (String s : separados) {
+                            
+                            if (!estadosS.contains(s)) {
+                                estadosS.add(s);
+                            }
+                        }
+                    }else{
+                        if (!estadosS.contains(listransiciones[i][2])) {
+                                estadosS.add(listransiciones[i][2]);
+                            }
+                    }
+                    System.out.println("este estado coincide");
+                }
+            }
+        }
+    }
+    
+    public static void ecerraduraT(ArrayList<String> estados, String contransicion){
+        ArrayList<String> temporal = new ArrayList<>();
+        temporal.addAll(estadosS);
+        estadosS.clear();
+        
+        for (String estado : temporal) {
+            System.out.println(" el estado actual es " + estado + " con la trancision ---- "+ contransicion);
+            for (int i = 0; i < listransiciones.length; i++) {
+                if (listransiciones[i][0].equals(estado) && listransiciones[i][1].equals(contransicion)) {
+                    
+                    
+                    if (listransiciones[i][2].contains(",")) {
+                        String[] separados = listransiciones[i][2].split(",");
+                        for (String s : separados) {
+                            
+                            if (!estadosS.contains(s)) {
+                                estadosS.add(s);
+                            }
+                        }
+                    }else{
+                        if (!estadosS.contains(listransiciones[i][2])) {
+                                estadosS.add(listransiciones[i][2]);
+                            }
+                    }
+                    System.out.println("este estado coincide");
+                }
+            }
+        }
+    }
+    
+    
+    
+}
+
